@@ -13,6 +13,7 @@ const AttemptQuiz = () => {
   const quizId = sessionStorage.getItem("quizId");
   const questions = useSelector((state) => state.AttemptQuiz.questions);
   const selectAnswerError = useSelector((state) => state.AttemptQuiz.error);
+
   const learnerattemptid = useSelector(
     (state) => state.learnerattempt.attemptId
   );
@@ -114,7 +115,7 @@ const AttemptQuiz = () => {
   return (
     <div className="learner-attemptquiz">
       {/* <AdminNavbar /> */}
-      <Timer />
+    <Timer/>
       <div className="attempt-quiz-page">
         <h1 className="quiz-title">Attempt Quiz</h1>
         <div className="quiz-content">
@@ -241,6 +242,12 @@ export default AttemptQuiz;
 //     const storedCurrentQuestionIndex = sessionStorage.getItem('currentQuestionIndex');
 //     return storedCurrentQuestionIndex ? parseInt(storedCurrentQuestionIndex) : 0;
 //   });
+//git branch learnerintegrated
+//git add .
+//git commit -m"integrated"
+//git checkout learnerintegrated
+//git push origin learnerintegrated
+//
 
 //   const [selectedOptions, setSelectedOptions] = useState(() => {
 //     const storedSelectedOptions = sessionStorage.getItem('selectedOptions');

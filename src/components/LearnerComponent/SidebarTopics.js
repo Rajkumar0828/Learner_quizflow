@@ -252,7 +252,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/Learner/Navbarone.css";
 import logo from "../../../src/Images/logo.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import PDFViewer from "./PDFViewer";
 import { CiMusicNote1 } from "react-icons/ci";
@@ -262,11 +262,16 @@ import { CiYoutube } from "react-icons/ci";
 import CourseDescription from "./CourseDescription";
 import LearnerAudioViewer from "./LearnerAudioViewer";
 import LearnerVideoViewer from "./LearnerVideoViewer";
- 
+import { fetchQuizIdRequest } from "../../actions/Quiz And Feedback Module/Learner/FetchQuizIdAction";
+
+
 function SidebarTopics() {
+
   const selectedCourse = useSelector((state) => state.enroll.selectedCourse);
   const viewcourse = useSelector((state) => state.enroll.course[0]);
   const userId = sessionStorage.getItem("UserSessionID");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
  
   const pdf = useSelector((state) => state.fetchPdf.material);
  
@@ -281,7 +286,8 @@ function SidebarTopics() {
       topics:
         selectedCourse && selectedCourse.topics
           ? selectedCourse.topics.map((topic) => ({
-              name: topic.topicName,
+            name: topic.topicName,
+            topicid:topic.topicId,
               isOpen: false,
               materials: topic.materials
                 ? topic.materials.map((material) => ({
@@ -403,16 +409,25 @@ function SidebarTopics() {
       openedMaterials.has(material.materialId)
     );
   };
+  // const quizId = useSelector(
+  //   (state) => state.fetchquizinstruction.quizinstructiondetails
+  // );
  
-  const completeTopic = (topicName) => {
+  const completeTopic = (topicName,topicId) => {
+    debugger;
+        // dispatch(fetchQuizIdRequest(topicId));
     setCompletedTopics((prevCompletedTopics) => {
       const updatedCompletedTopics = new Set(prevCompletedTopics);
       updatedCompletedTopics.add(topicName);
       saveCompletedTopics(updatedCompletedTopics);
+      sessionStorage.setItem("topicId", topicId);    
+    // sessionStorage.setItem("quizId",quizId.quizId);
+      navigate("/instruction");
+      
       return updatedCompletedTopics;
     });
   };
- 
+//  console.log(quizId);
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-default navbar-fixed-top">
@@ -517,8 +532,10 @@ function SidebarTopics() {
                             <button
                               className="btn btn-success"
                               disabled={!areAllMaterialsOpened(topic.materials)}
-                              onClick={() => completeTopic(topic.name)}
+                              onClick={() => completeTopic(topic.name,topic.topicid)
+                              }
                             >
+                              {/* {topic.topicid} */}
                               Take Quiz
                             </button>
                           </ul>
